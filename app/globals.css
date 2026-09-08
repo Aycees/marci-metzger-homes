@@ -1,0 +1,179 @@
+/* Self-hosted fonts — no third-party request, no layout shift. */
+@import "@fontsource-variable/newsreader/index.css";
+@import "@fontsource-variable/newsreader/opsz-italic.css";
+@import "@fontsource/karla/300.css";
+@import "@fontsource/karla/400.css";
+@import "@fontsource/karla/500.css";
+@import "@fontsource/karla/600.css";
+@import "@fontsource/karla/700.css";
+@import "tailwindcss";
+
+@source "../app/**/*.{ts,tsx}";
+@source "../components/**/*.{ts,tsx}";
+@source "../content/**/*.{ts,tsx}";
+
+@theme {
+  /* ---- surfaces ---- */
+  --color-bone: #faf7f2;
+  --color-sand: #f1eae0;
+  --color-line: #e2d8ca;
+
+  /* ---- ink ---- */
+  --color-ink: #1c1a17;
+  --color-ink-2: #4a453e;
+  --color-ink-3: #6e665c;
+
+  /* ---- accents ---- */
+  --color-clay: #a9552f;
+  --color-clay-dark: #8a4426;
+  --color-brass: #a08040;
+  --color-sage: #5a6b5d;
+  --color-danger: #b03a2e;
+
+  /* ---- on dark ---- */
+  --color-dune: #cbc0b2;
+  --color-sun: #e9c4a0;
+  --color-ember: #d9a87b;
+
+  --font-display: "Newsreader Variable", "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Karla", "Helvetica Neue", Arial, sans-serif;
+
+  --radius-field: 3px;
+  --radius-btn: 4px;
+
+  --ease-brand: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@layer base {
+  * {
+    min-width: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-bone);
+    color: var(--color-ink-2);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brass);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-sun);
+    color: var(--color-ink);
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+
+  @media (min-width: 768px) {
+    .container-page {
+      padding-inline: 48px;
+    }
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-clay-dark);
+  }
+
+  .field-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+
+  .measure {
+    max-width: 68ch;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Scroll reveal — additive only. Content is visible unless JS arms it. */
+.reveal-anim {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 400ms var(--ease-brand),
+    transform 400ms var(--ease-brand);
+}
+
+.reveal-anim.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.snap-x-list {
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.snap-x-list::-webkit-scrollbar {
+  display: none;
+}
+
+.snap-x-list > * {
+  scroll-snap-align: start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal-anim {
+    opacity: 1;
+    transform: none;
+  }
+}
